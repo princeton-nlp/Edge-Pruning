@@ -32,7 +32,7 @@ We expand the hidden state tensor from `(batch_size, seq_len, hidden_dim)` to `(
 
 ## Repository Structure
 
-> **_Note_:** Please unzip the `data.zip` directory to the `data/` folder before running the code!
+> **_Note_:** Please unzip the `data.zip` file to the `data/` directory before running the code!
 
 The repository is structured as follows.
 - The `data/` folder contains everything related to datasets and their generation. Specifically, `data/datasets/` has the datasets for the various tasks used in our evaluation, while the scripts in `data/scripts/` use the seed data in `data/helper_files` to generate these datasets programatically. `data/tracr_models` contains the precompiled weights of the tracr models we use, while `data/runs` provides the final checkpoints of the pruned versions.
