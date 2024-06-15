@@ -69,9 +69,9 @@ The data preparation scripts for Boolean Expressions are provided under `data/da
 - Use the flag `-m` or `--mode` to specify the mode of evaluation (`fewshot` or `instruction`).
 - The `-e/--edges` flag allows you to specify a JSON file with a list of edges that are loaded into the model first: this lets you evaluate, e.g., the intersection of two models found with the file `src/modeling/vis_fllama.py` (use the `-m1`, `-m2` and `-o` flags to specify model paths and the output JSON path).
 - You will probably need to launch this script with `4` (or more) GPUs: `run_scripts/launch_fllama_eval.sh` shows how to do this.
-For the pruning itself, the helper scripts in `run_scripts/launch_fllama_{instr/fs}_prune.sh` use PyTorch FSDP and call upon `src/prune/fllama_boolean_expressions_{ip/fs}.py`. Please refer to those scripts for the hyperparameters we used (and find the FSDP config files under `run_scripts/fsdp_configs/`). The runs are quite resource-intensive and required us to use multi-node training with 32 GPUs.
+For the pruning itself, the helper scripts in `run_scripts/launch_fllama_{instr/fs}_prune.sh` use PyTorch FSDP and call upon `src/prune/fllama_boolean_expressions_{ip/fs}.py`. Note that these are sbatch scripts (despite having the `.sh` extension). Please refer to them for the hyperparameters we used (and find the FSDP config files under `run_scripts/fsdp_configs/`). The runs are quite resource-intensive and required us to use multi-node training with 32 GPUs.
 
-> **_Note:_** We are aware of a bug in the CodeLlama pruning code due to which the loss starts out as a large negative number sometimes (when using multi-node training and initializing from a Llama checkpoint instead of our class). If you encounter this issue, terminating the run and re-launching it fixes the issue. Additionally, initializing from an Fllama class (load Llama into our class, then save to disk with `save_pretrained` and load that checkpoint instead) seems to help. We are looking into this bug and will fix it soon! 
+> **_Note:_** We are aware of a bug in the CodeLlama pruning code due to which the loss starts out as a large negative number sometimes (when using multi-node training and initializing from a Llama checkpoint instead of our class). Terminating the run and re-launching it fixes the issue. Additionally, initializing from an Fllama class (load Llama into our class, then save to disk with `save_pretrained` and load that checkpoint instead) seems to help. We are looking into this bug and will fix it soon! 
 
 ### Other Models
 
@@ -83,7 +83,7 @@ Please reach out to Adithya `<adithyab@princeton.edu>` with any questions or bug
 
 ## Citation
 
-If you use our work and are inspired by our work, please consider cite us (available soon):
+If you use our work and are inspired by our work, please consider citing us (available soon):
 
 ```
 ```
