@@ -112,7 +112,7 @@ Using a custom dataset with, e.g., the GPT-2 pruning script is as straightforwar
     "corrupted": "2 + 4 = <predict>6</predict>"
 }
 ```
-and calling the `src/prune/fpt2_custom.py` as in `run_scripts/custom_example.sh`. The part meant for the model to predict must be enclosed in `<predict></predict>`. You can also add a `split` key in your examples with value `train`/`validation`. If this key is missing, the entire dataset is used for both training and validation.
+and calling the `src/prune/fpt2_custom.py` as in `run_scripts/custom_example.sh`. The clean and corrupted text must be filled into the entries `clean` and `corrupted`. The part meant for the model to predict must be enclosed in `<predict></predict>`. You can also add a `split` key in your examples with value `train`/`validation`. If this key is missing, the entire dataset is used for both training and validation.
 
 ## Bugs or Questions?
 
