@@ -57,6 +57,7 @@ The `-w` flag signifies that embedding nodes were allowed to be pruned in the ci
 
 <p style="text-align: center">
 <img src="assets/circuit.png" alt="A visualized GPT-2 circuit" style="width:600px; display: block; margin: auto;"/>
+
 <em text-align="center"> An example circuit </em>
 </p>
 
