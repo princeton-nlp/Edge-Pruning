@@ -120,7 +120,7 @@ Please reach out to Adithya `<adithyab@princeton.edu>` with any questions or bug
 
 ## Citation
 
-If you use our work and are inspired by our work, please consider citing us (available soon):
+If you use our work or found it useful, please consider citing us (available soon):
 
 ```
 ```
