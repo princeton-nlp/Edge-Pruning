@@ -55,6 +55,21 @@ python src/eval/ioi.py -m /path/to/pruned_model -w
 ```
 The `-w` flag signifies that embedding nodes were allowed to be pruned in the circuit. You can also use this script with the original GPT-2 model (or any GPT-2 checkpoint).
 
+<p style="text-align: center">
+<img src="assets/circuit.png" alt="A visualized GPT-2 circuit" style="width:600px; display: block; margin: auto;"/>
+<em text-align="center"> An example circuit </em>
+</p>
+
+**_Visualizing a GPT-2 circuit:_** The following two steps will let you generate a drawing of a circuit. First, save the circuit edges using `src/modeling/vis_fpt2.py` as follows:
+```
+python src/modeling/vis_fpt2.py -i /path/to/checkpoint/dir/ -w
+```
+This will save the edges (by default to `/path/to/checkpoint/dir/edges.json`), and `-w` tells the script that you model masks over embedding edges as well. Then, you can draw the circuit with
+```
+python src/modeling/draw_fpt2.py -i /path/to/checkpoint/dir/edges.json
+```
+The default output path is `edges.pdf`; please look at the scripts for other arguments. An example circuit is shown above.
+
 ### Tracr Experiments
 
 The Tracr data and model preparation involves two steps (or you can use the datasets and models provided under `data/datasets/` and `data/tracr_models/`). We will illustrate them for the case of the task `reverse` (the files/steps for `xproportion` are the same, with the change `reverse -> xproportion`). You can call `data/scripts/prepare_reverse.py` to generate the dataset for the task. The model itself can be compiled by calling `data/scripts/prepare_reverse_tracr-model.py`. This will compile the tracr models using the `tracrx/` code and then save the weights as pickle files (by default under `data/tracr_models/`).
@@ -71,11 +86,32 @@ The data preparation scripts for Boolean Expressions are provided under `data/da
 - You will probably need to launch this script with `4` (or more) GPUs: `run_scripts/launch_fllama_eval.sh` shows how to do this.
 For the pruning itself, the helper scripts in `run_scripts/launch_fllama_{instr/fs}_prune.sh` use PyTorch FSDP and call upon `src/prune/fllama_boolean_expressions_{ip/fs}.py`. Note that these are sbatch scripts (despite having the `.sh` extension). Please refer to them for the hyperparameters we used (and find the FSDP config files under `run_scripts/fsdp_configs/`). The runs are quite resource-intensive and required us to use multi-node training with 32 GPUs.
 
-> **_Note:_** We are aware of a bug in the CodeLlama pruning code due to which the loss starts out as a large negative number sometimes (when using multi-node training and initializing from a Llama checkpoint instead of our class). Terminating the run and re-launching it fixes the issue. Additionally, initializing from an Fllama class (load Llama into our class, then save to disk with `save_pretrained` and load that checkpoint instead) seems to help. We are looking into this bug and will fix it soon! 
+> **_Note 1:_** We are aware of a bug in the CodeLlama pruning code due to which the loss starts out as a large negative number sometimes (when using multi-node training and initializing from a Llama checkpoint instead of our class). Terminating the run and re-launching it fixes the issue. Additionally, initializing from an Fllama class (load Llama into our class, then save to disk with `save_pretrained` and load that checkpoint instead) seems to help. We are looking into this bug and will fix it soon! 
+
+> **_Note 2:_** To facilitate use with other models, we plan on releasing modeling files for a few popular architectures soon. Stay tuned!
 
 ### Other Models
 
 Extension to other models should be straightforward by mimicking `modeling_{fpt2/fllama}.py` in modiyfing the corresponding HuggingFace model files (e.g., [`modeling_gpt2.py`](https://github.com/huggingface/transformers/blob/main/src/transformers/models/gpt2/modeling_gpt2.py)).
+
+### Custom Dataset
+
+Using a custom dataset with, e.g., the GPT-2 pruning script is as straightforward as writing into a JSONL file (`data/datasets/example_custom.jsonl`)
+```
+{
+    "clean": "1 + 2 = <predict>3</predict>",
+    "corrupted": "1 + 4 = <predict>5</predict>"
+}
+{
+    "clean": "5 + 1 = <predict>6</predict>",
+    "corrupted": "1 + 1 = <predict>2</predict>"
+}
+{
+    "clean": "2 + 2 = <predict>4</predict>",
+    "corrupted": "2 + 4 = <predict>6</predict>"
+}
+```
+and calling the `src/prune/fpt2_custom.py` as in `run_scripts/custom_example.sh`. The part meant for the model to predict must be enclosed in `<predict></predict>`. You can also add a `split` key in your examples with value `train`/`validation`. If this key is missing, the entire dataset is used for both training and validation.
 
 ## Bugs or Questions?
 

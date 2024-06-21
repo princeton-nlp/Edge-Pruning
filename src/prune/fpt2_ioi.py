@@ -447,7 +447,6 @@ class DataCollatorIOI:
             text = example[key]
             corr_text = example["corr_"+key]
             
-            # Only th last word should be predicted (may be > 1 token)
             last_space = text.rfind(' ')
             non_loss_portion = text[:last_space]
             
