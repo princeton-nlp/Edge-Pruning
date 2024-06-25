@@ -1,7 +1,7 @@
 # Edge Pruning For Circuit Discovery
 
 ![Edge Pruning](assets/teaser.png)
-This repository contains the code and data for the paper "Finding Transformer Circuits with Edge Pruning".
+This repository contains the code and data for the paper ["Finding Transformer Circuits with Edge Pruning"](https://arxiv.org/abs/2406.16778).
 
 ## Quick Links
 
@@ -120,7 +120,14 @@ Please reach out to Adithya `<adithyab@princeton.edu>` with any questions or bug
 
 ## Citation
 
-If you use our work or found it useful, please consider citing us (available soon):
+If you use our work or found it useful, please consider citing us:
 
 ```
+@misc{bhaskar2024finding,
+    title={{F}inding Transformer Circuits with {E}dge {P}runing}, 
+    author={Adithya Bhaskar and Alexander Wettig and Dan Friedman and Danqi Chen},
+    year={2024},
+    eprint={2406.16778},
+    archivePrefix={arXiv},
+}
 ```
