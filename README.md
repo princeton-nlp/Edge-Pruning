@@ -77,7 +77,7 @@ The Tracr data and model preparation involves two steps (or you can use the data
 
 These weights are now compatible with our PyTorch model, defined in `src/modeling/modeling_erazr.py`. The pruning code in `src/prune/erazr_{reverse/xproportion}.py` is called upon by the helper scripts in `run_scripts/tracr_{reverse/xproportion}.sh`. The evaluation is performed at the end of the run by the pruning code itself. Please refer to the helper scripts for an example of how to launch a pruning run.
 
-Extension to other tracr models should be straightforward by modifying the prepratation scripts above. However, note that Tracr seems to map the BOS token to a random index in its vocabulary for each task, and figuring out the specific index for may need an inspection of a few outputs.
+Extension to other tracr models should be straightforward by modifying the pruning scripts above. However, note that Tracr seems to map the BOS token to a random index in its vocabulary for each task, and figuring out the specific index for may need an inspection of a few outputs.
 
 ### CodeLlama Experiments
 
