@@ -69,7 +69,7 @@ This will save the edges (by default to `/path/to/checkpoint/dir/edges.json`), a
 ```
 python src/modeling/draw_fpt2.py -i /path/to/checkpoint/dir/edges.json
 ```
-The default output path is `edges.pdf`; please look at the scripts for other arguments. An example circuit is shown above.
+The default output path is `/path/to/checkpoint/dir/edges.pdf`; please look at the scripts for other arguments. An example circuit is shown above.
 
 ### Tracr Experiments
 
