@@ -123,11 +123,10 @@ Please reach out to Adithya `<adithyab@princeton.edu>` with any questions or bug
 If you use our work or found it useful, please consider citing us:
 
 ```
-@misc{bhaskar2024finding,
-    title={{F}inding Transformer Circuits with {E}dge {P}runing}, 
-    author={Adithya Bhaskar and Alexander Wettig and Dan Friedman and Danqi Chen},
-    year={2024},
-    eprint={2406.16778},
-    archivePrefix={arXiv},
+@inproceedings{bhaskar2024finding,
+   title={Finding Transformer Circuits with Edge Pruning},
+   author={Adithya Bhaskar and Alexander Wettig and Dan Friedman and Danqi Chen},
+   booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+   year={2024}
 }
 ```
