@@ -91,6 +91,7 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
         self.skip_layer_loss_if_higher_sparsity = kwargs.pop('skip_layer_loss_if_higher_sparsity', False)
         
         self.digits = None
+        self.device_count = torch.cuda.device_count()
                 
         super().__init__(*args, **kwargs)
         
@@ -137,6 +138,8 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
         corr_input_ids = inputs.pop("corr_input_ids")
         input_ids = inputs.pop("input_ids")
         
+        bsz = input_ids.shape[0]
+        
         with torch.no_grad():
             # First get the logits from the GPT-2 model
             gpt2_logits = self.gpt2_model(input_ids=input_ids, **inputs).logits
@@ -150,6 +153,10 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
             
             # Now run the corrupted inputs through it, and retain the activations
             corr_x = self.gpt2_model(input_ids=corr_input_ids, **inputs, output_writer_states=True).writer_states
+
+            # Reshape corr_x in case we have distributed training
+            tgt_shape = (-1, bsz // self.device_count, *corr_x.shape[2:])
+            corr_x = corr_x.reshape(tgt_shape)
         
         outputs = model(
             input_ids=input_ids,
@@ -158,8 +165,6 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
             target_node_sparsity=self.get_current_layer_target_sparsity(self.state.global_step),
             corr_x=corr_x
         )
-        
-        # print(torch.cuda.max_memory_allocated() / 1024**3, torch.cuda.memory_allocated() / 1024**3)
         
         reg_edge_loss = outputs["edge_loss"]
         if self.skip_layer_loss_if_higher_sparsity and outputs["model_node_sparsity"] > outputs["target_node_sparsity"]:
