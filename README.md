@@ -71,6 +71,9 @@ python src/modeling/draw_fpt2.py -i /path/to/checkpoint/dir/edges.json
 ```
 The default output path is `/path/to/checkpoint/dir/edges.pdf`; please look at the scripts for other arguments. An example circuit is shown above.
 
+#### Running ACDC and EAP
+We use the original source codes of [ACDC](https://github.com/ArthurConmy/Automatic-Circuit-Discovery) and [EAP](https://github.com/Aaquib111/edge-attribution-patching/tree/minimal-implementation) (the minimal implementation branch), with thin wrappers. Example wrappers are included in `baselines_examples/`.
+
 ### Tracr Experiments
 
 The Tracr data and model preparation involves two steps (or you can use the datasets and models provided under `data/datasets/` and `data/tracr_models/`). We will illustrate them for the case of the task `reverse` (the files/steps for `xproportion` are the same, with the change `reverse -> xproportion`). You can call `data/scripts/prepare_reverse.py` to generate the dataset for the task. The model itself can be compiled by calling `data/scripts/prepare_reverse_tracr-model.py`. This will compile the tracr models using the `tracrx/` code and then save the weights as pickle files (by default under `data/tracr_models/`).

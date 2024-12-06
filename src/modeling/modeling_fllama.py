@@ -2035,14 +2035,17 @@ class FLlamaForCausalLM(FLlamaPreTrainedModel):
         return reordered_past
 
 if __name__ == '__main__':
-    model = FLlamaForCausalLM.from_pretrained("data/models/Sheared-LLaMA-1.3B/", torch_dtype=torch.bfloat16, with_embedding_nodes=True).to("cuda")
-    tokenizer = AutoTokenizer.from_pretrained("data/models/Sheared-LLaMA-1.3B/")
+    model = FLlamaForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf", torch_dtype=torch.bfloat16, with_embedding_nodes=True).to("cuda")
+    tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
     
     inputs = tokenizer("Hi, I am John. I", return_tensors="pt").to("cuda")
 
-    model.set_edge_threshold_for_deterministic(0.0)
-    model.set_node_threshold_for_deterministic(0.0)
+    model.train()
+    logits = model(**inputs).logits
+
+    # model.set_edge_threshold_for_deterministic(0.0)
+    # model.set_node_threshold_for_deterministic(0.0)
     
-    outputs = model.generate(**inputs, max_length=30)
-    output = tokenizer.batch_decode(outputs, skip_special_tokens=True, clean_up_tokenization_spaces=True)[0]
-    print(output)
+    # outputs = model.generate(**inputs, max_length=30)
+    # output = tokenizer.batch_decode(outputs, skip_special_tokens=True, clean_up_tokenization_spaces=True)[0]
+    # print(output)
