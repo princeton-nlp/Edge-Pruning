@@ -131,8 +131,6 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
         corr_input_ids = inputs.pop("corr_input_ids")
         input_ids = inputs.pop("input_ids")
         
-        bsz = input_ids.shape[0]
-        
         with torch.no_grad():
             # First get the logits from the GPT-2 model
             logits_gpt2 = self.gpt2_model(input_ids=input_ids, **inputs).logits
@@ -143,10 +141,7 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
                 **inputs,
                 output_writer_states=True
             ).writer_states
-
-            # Reshape corr_x in case we have distributed training
-            tgt_shape = (-1, bsz // self.device_count, *corr_x.shape[2:])
-            corr_x = corr_x.reshape(tgt_shape)
+            corr_x = corr_x.transpose(0, 1)
         
         outputs = model(
             input_ids=input_ids,

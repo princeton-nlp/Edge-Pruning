@@ -1619,6 +1619,8 @@ class FPT2LMHeadModel(FPT2PreTrainedModel):
         """
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
 
+        if corr_x is not None:
+            corr_x = corr_x.transpose(0, 1)
         transformer_outputs = self.transformer(
             input_ids,
             past_key_values=past_key_values,

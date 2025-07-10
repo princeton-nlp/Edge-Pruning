@@ -138,8 +138,6 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
         corr_input_ids = inputs.pop("corr_input_ids")
         input_ids = inputs.pop("input_ids")
         
-        bsz = input_ids.shape[0]
-        
         with torch.no_grad():
             # First get the logits from the GPT-2 model
             gpt2_logits = self.gpt2_model(input_ids=input_ids, **inputs).logits
@@ -152,11 +150,12 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
             gpt2_logits = torch.nn.functional.log_softmax(gpt2_logits, dim=-1)
             
             # Now run the corrupted inputs through it, and retain the activations
-            corr_x = self.gpt2_model(input_ids=corr_input_ids, **inputs, output_writer_states=True).writer_states
-
-            # Reshape corr_x in case we have distributed training
-            tgt_shape = (-1, bsz // self.device_count, *corr_x.shape[2:])
-            corr_x = corr_x.reshape(tgt_shape)
+            corr_x = self.gpt2_model(
+                input_ids=corr_input_ids, 
+                **inputs, 
+                output_writer_states=True
+            ).writer_states
+            corr_x = corr_x.transpose(0, 1)
         
         outputs = model(
             input_ids=input_ids,
