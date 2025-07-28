@@ -1,6 +1,6 @@
 # Edge Pruning For Circuit Discovery
 
-> *UPDATE*: The code for GPT-2 circuits does not always initialize the `log_alphas` correctly with newer `transformers` versions. We have provided a modified version of just the `fpt2_ioi.py` script that works with newer versions, and have also updated the arguments in `run_scripts/ioi_sweep.sh` to reflect this. For this updated script, please use the `requirements-experimental.txt` file for the python environment.
+> **UPDATE**: The code for GPT-2 circuits does not always initialize the `log_alphas` correctly with newer `transformers` versions. We have provided a modified version of just the `fpt2_ioi.py` script that works with newer versions, and have also updated the arguments in `run_scripts/ioi_sweep.sh` to reflect this. For this updated script, please use the `requirements-experimental.txt` file for the python environment.
 
 ![Edge Pruning](assets/teaser.png)
 This repository contains the code and data for the paper ["Finding Transformer Circuits with Edge Pruning"](https://arxiv.org/abs/2406.16778).
