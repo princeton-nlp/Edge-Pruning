@@ -1,0 +1,15 @@
+accelerate==1.9.0
+datasets==3.3.2
+einops
+evaluate
+flash_attn==2.8.2
+graphviz
+haiku
+jax
+networkx==3.4.2
+numpy==2.2.6
+scipy
+torch==2.7.1
+torchvision==0.22.1
+tqdm
+transformers==4.54.0

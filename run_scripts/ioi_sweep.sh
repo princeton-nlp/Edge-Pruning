@@ -46,7 +46,7 @@ WANDB_MODE=disabled python src/prune/fpt2_ioi.py \
     --reg_layer_learning_rate $RLLR \
     --max_steps $TOTAL \
     --warmup_steps 200 \
-    --evaluation_strategy steps \
+    --eval_strategy steps \
     --eval_steps 64 \
     --save_steps 64 \
     --logging_steps 8 \

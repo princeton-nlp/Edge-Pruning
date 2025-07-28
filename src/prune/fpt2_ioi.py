@@ -28,7 +28,6 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import datasets
-import evaluate
 import numpy as np
 from datasets import load_dataset, load_from_disk, Dataset, DatasetDict
 
@@ -124,7 +123,7 @@ class FPT2InfoTrainer(Seq2SeqTrainer):
         else:
             return self.target_layer_sparsity
 
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         start_idxes = inputs.pop("start_idxes")
         end_idxes = inputs.pop("end_idxes")
         _ = inputs.pop("labels")
@@ -638,10 +637,12 @@ def main():
         with_embedding_nodes=data_args.with_embedding_nodes,
         disable_linear_regularization_term=data_args.disable_linear_reg_term,
     )
+    model.reset_all_log_alphas() # note: overrides any previous log_alphas, remove if not initializing from gpt-2!
     gpt2_model = FPT2LMHeadModel.from_pretrained(
         "gpt2",
         with_embedding_nodes=data_args.with_embedding_nodes,
     ).to("cuda")
+    gpt2_model.reset_all_log_alphas()
     
     tokenizer = AutoTokenizer.from_pretrained("gpt2")
     tokenizer.pad_token = tokenizer.eos_token

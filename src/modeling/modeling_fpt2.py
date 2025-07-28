@@ -1592,6 +1592,10 @@ class FPT2LMHeadModel(FPT2PreTrainedModel):
     def add_or_remove_edge(self, from_node, to_node, remove=False, value=None):
         return self.transformer.add_or_remove_edge(from_node, to_node, remove=remove, value=value)
 
+    @torch.no_grad()
+    def reset_all_log_alphas(self):
+        self.transformer.reset_all_log_alphas()
+
     def forward(
         self,
         input_ids: Optional[torch.LongTensor] = None,
