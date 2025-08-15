@@ -69,6 +69,8 @@ def main():
     model.eval()
     tokenizer = AutoTokenizer.from_pretrained("gpt2")
     control_model = FPT2LMHeadModel.from_pretrained("gpt2", with_embedding_nodes=args.with_embedding_nodes).to(args.device)
+    control_model.reset_all_log_alphas()
+    control_model.eval()
     tokenizer.pad_token_id = tokenizer.eos_token_id
     
     if args.sparsity_edge is None:
@@ -172,7 +174,7 @@ def main():
             prefix_lengths.append(prefix_length)
         
         control_outputs = control_model(input_ids)
-        corr_x = control_model(corr_input_ids, output_writer_states=True).writer_states
+        corr_x = control_model(corr_input_ids, output_writer_states=True).writer_states.transpose(0, 1)
         outputs = model(input_ids, corr_x=corr_x)
         logits = outputs.logits
         control_logits = control_outputs.logits

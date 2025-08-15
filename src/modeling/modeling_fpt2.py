@@ -197,7 +197,7 @@ def get_num_edges(config, with_embedding_nodes=False):
     embedding_nodes = 2 if with_embedding_nodes else 0
     for l in range(config.n_layer):
         # The attention heads' Q/K/V will read from heads + mlp of all previous layers + any embeddings
-        contribution = embedding_nodes + l * (config.n_layer + 1)
+        contribution = embedding_nodes + l * (config.n_head + 1)
         n_edges += 3 * config.n_head * contribution
         # The MLP reads all the above + the output of this layer's heads
         n_edges += contribution + config.n_head
@@ -207,7 +207,7 @@ def get_num_edges(config, with_embedding_nodes=False):
 
 def get_num_nodes(config, with_embedding_nodes=False):
     # This only counts writer nodes
-    return get_num_writers(config) 
+    return get_num_writers(config, with_embedding_nodes) 
 
 def get_base_indices_for_layer(config, l, with_embedding_nodes=False):
     writer_offset = 2 if with_embedding_nodes else 0
@@ -1153,6 +1153,8 @@ class FPT2Model(FPT2PreTrainedModel):
         self.final_read_log_alphas.data.normal_(mean=10.0, std=0.01)
         self.sparsity_lambda_edges_1.data.zero_()
         self.sparsity_lambda_nodes_1.data.zero_()
+        self.sparsity_lambda_edges_2.data.zero_()
+        self.sparsity_lambda_nodes_2.data.zero_()
 
     def read(self, x, corr_x=None, embeds=None):
         # x is (writers, batch_size, sequence_length, hidden_size)

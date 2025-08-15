@@ -585,6 +585,8 @@ def main():
         "gpt2",
         with_embedding_nodes=data_args.with_embedding_nodes,
     ).to("cuda")
+    gpt2_model.reset_all_log_alphas()
+    gpt2_model.eval()
     
     tokenizer = AutoTokenizer.from_pretrained("gpt2")
     tokenizer.pad_token = tokenizer.eos_token
